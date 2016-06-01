@@ -27,6 +27,7 @@ TodoItem <- setRefClass("TodoItem",
                         itemID <<- ID
                       },
                       show = function() {
+                        "print a todo item"
                         cat("Text:      "); cat(methods::show(itemText))
                         cat("Created:   "); cat(methods::show(timeCreated))
                         if(isCompleted) {
@@ -35,18 +36,21 @@ TodoItem <- setRefClass("TodoItem",
                         cat("ID:        "); cat(methods::show(itemID))
                       },
                       markComplete = function() {
+                        "Mark an item as complete"
                         if (isCompleted)
                           stop(sprintf("Item already completed on %s", timeCompleted))
                         isCompleted <<- TRUE
                         timeCompleted <<- Sys.time()
                       },
                       markIncomplete = function() {
+                        "Mark a completed item incomplete."
                         if (!isCompleted)
                           stop(sprintf("Item not marked as complete.", timeCompleted))
                         isCompleted <<- FALSE
                         timeCompleted <<- as.POSIXct(NA)
                       },
                       as.data.frame = function() {
+                        "Convert an item to a data.frame"
                         out <- data.frame(itemText = itemText,
                                           timeCreated = timeCreated,
                                           timeCompleted = timeCompleted,
@@ -54,9 +58,6 @@ TodoItem <- setRefClass("TodoItem",
                                           itemID = itemID,
                                           stringsAsFactors = FALSE)
                         print(out)
-                      },
-                      import = function(list) {
-
                       }
                     ))
 
@@ -78,13 +79,18 @@ TodoList <- setRefClass("TodoList",
                         }
                       },
                       add = function(text) {
+                        "Generate a new item to the todo list with the given text"
                         nitems <<- nitems + 1L
                         newItem <- TodoItem$new(text = text, ID = nitems)
-                        items <<- setNames(c(items, newItem), c(names(items), paste0("itm", nitems)))
+                        items <<- setNames(c(items, newItem),
+                                           c(names(items), paste0("itm", nitems)))
                       },
                       add_item = function(newItem) {
+                        "Add a TodoItem object to the todo list"
+                        stopifnot()
                         nitems <<- nitems + 1L
-                        items <<- setNames(c(items, newItem), c(names(items), paste0("itm", nitems)))
+                        items <<- setNames(c(items, newItem),
+                                           c(names(items), paste0("itm", nitems)))
                       },
                       done = function(ID) {
                         ID <- paste0("itm", ID)

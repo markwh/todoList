@@ -1,10 +1,13 @@
 Package: todoList
 Type: Package
 Title: Project To-do lists using reference classes (R5)
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Date: 2016-05-30
 Authors@R: person("Mark", "Hagemann", email = "mark.hagemann@gmail.com", role = c("aut", "cre"))
 Maintainer: Mark Hagemann <mark.hagemann@gmail.com>
 Description: Implements a project-specific todo list using R5 object system
 License: GPL-3
 LazyData: TRUE
+Suggests:
+    testthat
+RoxygenNote: 5.0.1
