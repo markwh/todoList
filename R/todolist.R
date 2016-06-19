@@ -6,7 +6,8 @@
 #' @field timeCompleted Time item was completed
 #' @field isCompleted Has the item been completed?
 #' @field itemID Integer identifier of the todo item.
-#' @export
+#' @export TodoItem
+#' @exportClass TodoItem
 
 TodoItem <- setRefClass("TodoItem",
                     fields = list(itemText = "character",
@@ -57,7 +58,7 @@ TodoItem <- setRefClass("TodoItem",
                                           isCompleted = isCompleted,
                                           itemID = itemID,
                                           stringsAsFactors = FALSE)
-                        print(out)
+                        out
                       }
                     ))
 
@@ -65,47 +66,84 @@ TodoItem <- setRefClass("TodoItem",
 #'
 #' @field items List of TodoItems
 #' @field nitems Number of items in list
+#' @field File Associated csv file for reading and writing operations.
+#' @field autowrite Logical, automatically write file upon modification? Defaults to TRUE.
+#' @export TodoList
+#' @exportClass TodoList
 
 TodoList <- setRefClass("TodoList",
                     fields = list(items = "list",
-                                  nitems = "integer"),
+                                  nitems = "integer",
+                                  File = "character",
+                                  autowrite = "logical"),
                     methods = list(
-                      initialize = function(file = NULL) {
+                      initialize = function(file = NULL, autowrite = TRUE) {
                         items <<- list()
                         nitems <<- 0L
+                        File <<- NA_character_
+                        autowrite <<- autowrite
 
                         if (!is.null(file)) {
                           .self$import.csv(file)
+                          File <<- file
                         }
                       },
-                      add = function(text) {
+                      show = function(what = c("todo", "done", "all")) {
+                        what = match.arg(what)
+
+                        cmpltd <- vapply(items, `[[`, logical(1), "isCompleted")
+                        if (what == "todo")
+                          toshow <- items[!cmpltd]
+                        else if (what == "done")
+                          toshow <- items[cmpltd]
+                        else
+                          toshow <- items
+                        cat("nitems:      "); cat(methods::show(nitems))
+                        cat("items:     "); cat(methods::show(toshow))
+                        },
+                      add = function(text, write = autowrite) {
                         "Generate a new item to the todo list with the given text"
                         nitems <<- nitems + 1L
                         newItem <- TodoItem$new(text = text, ID = nitems)
-                        items <<- setNames(c(items, newItem),
+                        items <<- stats::setNames(c(items, newItem),
                                            c(names(items), paste0("itm", nitems)))
+                        if (write && file.exists(File))
+                          .self$write.csv()
                       },
-                      add_item = function(newItem) {
+                      add_item = function(newItem, write = autowrite) {
                         "Add a TodoItem object to the todo list"
                         stopifnot()
                         nitems <<- nitems + 1L
-                        items <<- setNames(c(items, newItem),
+                        items <<- stats::setNames(c(items, newItem),
                                            c(names(items), paste0("itm", nitems)))
+                        if (write && file.exists(File))
+                          .self$write.csv()
                       },
-                      done = function(ID) {
+                      done = function(ID, write = autowrite) {
                         ID <- paste0("itm", ID)
                         items[[ID]]$markComplete()
+                        if (write && file.exists(File))
+                          .self$write.csv()
                       },
                       to_df = function() {
                         lst <- list()
-                        # browser()
                         for (item in items) {
                           lst <- c(lst, list(item$as.data.frame()))
                         }
                         out <- dplyr::bind_rows(lst)
                         out
                       },
-                      write.csv = function(file) {
+                      write.csv = function(file = NULL, setFile = FALSE) {
+                        if (is.null(file)) {
+                          if (is.na(File)) {
+                            stop("file must be specified if none already associate with object")
+                          } else {
+                            file = File
+                          }
+                        }
+                        if (setFile) {
+                          File <<- file
+                        }
                         out <- .self$to_df()
                         # print(out)
                         # browser()
@@ -121,7 +159,7 @@ TodoList <- setRefClass("TodoList",
                                                    timeCreated = as.POSIXct(timeCreated),
                                                    timeCompleted = as.POSIXct(timeCompleted),
                                                    isCompleted = isCompleted))
-                          .self$add_item(newItem = newItem)
+                          .self$add_item(newItem = newItem, write = FALSE)
                         }
                       }
                     ))

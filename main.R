@@ -6,5 +6,11 @@ library(devtools)
 
 # Packages
 
+use_package("stats")
+
 # devtools utilities
 use_testthat()
+
+# vignette
+
+use_vignette("todoList")

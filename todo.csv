@@ -1,0 +1,8 @@
+"itemText","timeCreated","timeCompleted","isCompleted","itemID"
+"Finish vignette",2016-06-16 11:52:23,NA,FALSE,1
+"Check documentation",2016-06-16 11:52:25,NA,FALSE,2
+"this is a test",2016-06-16 12:02:37,2016-06-16 12:03:08,TRUE,3
+"only print unfinished tasks by default",2016-06-19 12:52:56,NA,FALSE,4
+"add subtasks",2016-06-19 12:53:07,NA,FALSE,5
+"write upon modification",2016-06-19 12:53:38,2016-06-19 14:03:07,TRUE,6
+"store filename with TodoList object",2016-06-19 12:54:19,2016-06-19 13:00:03,TRUE,7

@@ -14,12 +14,16 @@ Reference Class to represent todo list
 \item{\code{items}}{List of TodoItems}
 
 \item{\code{nitems}}{Number of items in list}
+
+\item{\code{File}}{Associated csv file for reading and writing operations.}
+
+\item{\code{autowrite}}{Logical, automatically write file upon modification? Defaults to TRUE.}
 }}
 \section{Methods}{
 
 \describe{
-\item{\code{add(text)}}{Generate a new item to the todo list with the given text}
+\item{\code{add(text, write = autowrite)}}{Generate a new item to the todo list with the given text}
 
-\item{\code{add_item(newItem)}}{Add a TodoItem object to the todo list}
+\item{\code{add_item(newItem, write = autowrite)}}{Add a TodoItem object to the todo list}
 }}
 
