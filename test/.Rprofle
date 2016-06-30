@@ -1,0 +1,11 @@
+
+
+
+  # todoList package
+  if (require(todoList)) {
+  do <- TodoList$new(file = "./dothis.csv")
+
+  .Last <- function() {
+    do$write.csv(file = "./dothis.csv")
+  }
+  }

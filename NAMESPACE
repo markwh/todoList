@@ -2,5 +2,6 @@
 
 export(TodoItem)
 export(TodoList)
+export(use_todo)
 exportClasses(TodoItem)
 exportClasses(TodoList)
