@@ -16,9 +16,16 @@ use_todo <- function(name = "todo", file = "./todo.csv") {
     txt1 <- readLines(".Rprofile")
     if (length(grep("todoList", txt1)) > 0) {
       message("It appears todoList is already integrated to this project")
-      return(TRUE)
+      invisible(TRUE)
     }
+  } else {
+    file.create(".Rprofile")
   }
+
+  # Make empty todo list
+  # browser()
+  # assign(name, value = todoList::TodoList$new())
+  # do.call(sprintf("%s$write.csv", name), args = list(file = file))
 
   # add loading to .rprofile
 
@@ -26,29 +33,31 @@ use_todo <- function(name = "todo", file = "./todo.csv") {
 
 
   # todoList package
-  if (require(todoList)) {
-  %s <- TodoList$new(file = "%s")
+  if (requireNamespace("todoList", quietly = TRUE)) {
+    if (file.exists("%s")) {
+      %s <- todoList::TodoList$new(file = "%s")
+    } else {
+      %s <- todoList::TodoList$new()
+    }
+  }\n', file, name, file, name)
 
-  PLACEHOLDER_FOR_LAST
-
-  }', name, file)
-
-  write(profstr, file = ".Rprofile", append = TRUE)
+  writeLines(profstr, con = ".Rprofile")
 
   # add saving to .Last()
-  if (length(grep("\\.Last", txt1)) > 0) {
 
-    laststr <- sprintf('
+  lasttxt <- sprintf('
 
-    .Last <- function() {
-      %s$write.csv(file = "%s")
-    }', name, file)
+  if (requireNamespace("todoList", quietly = TRUE))
+      %s$write.csv(file = "%s")\n', name, file)
 
-  }
+  addToLast(text = lasttxt, fileloc = ".Rprofile")
 }
 
 # fileloc should be the location of the .RProfile file
 addToLast <- function(text, fileloc) {
+
+  if (!file.exists(fileloc))
+    stop(sprintf("File not found: %s", fileloc))
 
   # test if last is present in .profile
   txt1 <- readLines(fileloc)
@@ -78,4 +87,5 @@ addToLast <- function(text, fileloc) {
 
   writeLines(outtext, fileloc)
 
+  source(".Rprofile")
 }

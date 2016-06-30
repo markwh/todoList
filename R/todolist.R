@@ -150,7 +150,11 @@ TodoList <- setRefClass("TodoList",
                         utils::write.csv(x = out, file = file, row.names = FALSE)
                       },
                       import.csv = function(file) {
-                        input <- utils::read.csv(file = file, stringsAsFactors = FALSE)
+                        input <- try(utils::read.csv(file = file,
+                                                     stringsAsFactors = FALSE),
+                                     silent = TRUE)
+                        if (is(input, "try-error"))
+                          return()
                         for (i in 1:nrow(input)) {
                           itmlst <- input[i, ]
                           newItem <- with(itmlst,
