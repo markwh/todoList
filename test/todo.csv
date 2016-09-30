@@ -4,5 +4,4 @@
 "this is a test",2016-06-16 12:02:37,2016-06-16 12:03:08,TRUE,3
 "get changes stored on external backup",2016-06-23 16:07:14,2016-06-30 14:45:14,TRUE,4
 "add subtasks",2016-06-30 14:45:51,NA,FALSE,5
-"add method to remove (not complete) tasks",2016-07-08 15:45:12,NA,FALSE,6
-"add comment field",2016-07-08 15:46:09,NA,FALSE,7
+"test use_todo()",2016-06-30 16:59:38,NA,FALSE,6

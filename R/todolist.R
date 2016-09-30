@@ -14,13 +14,15 @@ TodoItem <- setRefClass("TodoItem",
                                   timeCreated = "POSIXct",
                                   timeCompleted = "POSIXct",
                                   isCompleted = "logical",
-                                  itemID = "integer"),
+                                  itemID = "integer",
+                                  status = "factor"),
                     # contains = "list",
                     methods = list(
                       initialize = function(text, ID = NA_integer_,
-                                            timeCreated = Sys.time(),
-                                            timeCompleted = as.POSIXct(NA),
-                                            isCompleted = FALSE) {
+                                  timeCreated = Sys.time(),
+                                  timeCompleted = as.POSIXct(NA),
+                                  isCompleted = FALSE,
+                                  status = "incomplete") {
                         itemText <<- text
                         timeCreated <<- timeCreated
                         timeCompleted <<- timeCompleted
@@ -35,6 +37,9 @@ TodoItem <- setRefClass("TodoItem",
                           cat("Completed: "); cat(methods::show(timeCompleted))
                         }
                         cat("ID:        "); cat(methods::show(itemID))
+                      },
+                      setStatus = function(newStatus = c("incomplete", "completed", "removed")) {
+
                       },
                       markComplete = function() {
                         "Mark an item as complete"
