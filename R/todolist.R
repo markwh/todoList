@@ -27,6 +27,10 @@ TodoItem <- setRefClass("TodoItem",
                         timeCreated <<- timeCreated
                         timeCompleted <<- timeCompleted
                         isCompleted <<- isCompleted
+                        status <<- factor(status,
+                                          levels = c("incomplete",
+                                                     "completed",
+                                                     "removed"))
                         itemID <<- ID
                       },
                       show = function() {
@@ -39,7 +43,16 @@ TodoItem <- setRefClass("TodoItem",
                         cat("ID:        "); cat(methods::show(itemID))
                       },
                       setStatus = function(newStatus = c("incomplete", "completed", "removed")) {
-
+                        "set the status of a todo item"
+                        newStatus <- factor(newStatus,
+                                         levels = c("incomplete",
+                                                    "completed",
+                                                    "removed"))
+                        status <<- newStatus
+                        if (newStatus == "completed")
+                          .self$markComplete()
+                        if (newStatus == "incomplete")
+                          .self$markIncomplete()
                       },
                       markComplete = function() {
                         "Mark an item as complete"
@@ -59,6 +72,7 @@ TodoItem <- setRefClass("TodoItem",
                         "Convert an item to a data.frame"
                         out <- data.frame(itemText = itemText,
                                           timeCreated = timeCreated,
+                                          status = status,
                                           timeCompleted = timeCompleted,
                                           isCompleted = isCompleted,
                                           itemID = itemID,
@@ -93,16 +107,19 @@ TodoList <- setRefClass("TodoList",
                           File <<- file
                         }
                       },
-                      show = function(what = c("todo", "done", "all")) {
+                      show = function(what = c("todo", "done", "removed", "all")) {
                         what = match.arg(what)
 
                         cmpltd <- vapply(items, `[[`, logical(1), "isCompleted")
+                        rmvd <- vapply(items, function(x) x$status == "removed")
                         if (what == "todo")
-                          toshow <- items[!cmpltd]
+                          toshow <- items[!cmpltd & !rmvd]
                         else if (what == "done")
-                          toshow <- items[cmpltd]
-                        else
-                          toshow <- items
+                          toshow <- items[cmpltd & !rmvd]
+                        else if (what == "removed")
+                          toshow <- items[rmvd]
+                        else if (what == "all")
+                          toshow <- items[!rmvd]
                         cat("nitems:      "); cat(methods::show(nitems))
                         cat("items:     "); cat(methods::show(toshow))
                         },
@@ -126,9 +143,13 @@ TodoList <- setRefClass("TodoList",
                       },
                       done = function(ID, write = autowrite) {
                         ID <- paste0("itm", ID)
-                        items[[ID]]$markComplete()
+                        items[[ID]]$setStatus("completed")
                         if (write && file.exists(File))
                           .self$write.csv()
+                      },
+                      remove = function(ID, write = autowrite) {
+                        ID <- paste0("itm", ID)
+                        items[[ID]]$setStatus("removed")
                       },
                       to_df = function() {
                         lst <- list()

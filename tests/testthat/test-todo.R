@@ -73,3 +73,16 @@ test_that("TodoList generation works", {
 
 
 })
+
+
+test_that("Setting status works like makComplete, etc.", {
+  itm1 <- TodoItem("Make it rain")
+
+  expect_equal(as.character(itm1$status), "incomplete")
+
+  Sys.sleep(0.1)
+  itm1$setStatus(newStatus = "completed")
+  expect_true(itm1$isCompleted)
+  itmdf <- itm1$as.data.frame()
+  expect_equal(as.character(itmdf$status), "completed")
+})
