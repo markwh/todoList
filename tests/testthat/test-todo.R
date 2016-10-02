@@ -85,4 +85,13 @@ test_that("Setting status works like makComplete, etc.", {
   expect_true(itm1$isCompleted)
   itmdf <- itm1$as.data.frame()
   expect_equal(as.character(itmdf$status), "completed")
+
+  itm1$setStatus(newStatus = "removed")
+  expect_true(itm1$isCompleted)
+  expect_equal(as.character(itm1$status), "removed")
+
+  expect_error(itm1$setStatus("badstatus"))
+
+  itm1$setStatus("incomplete")
+  expect_false(itm1$isCompleted)
 })
