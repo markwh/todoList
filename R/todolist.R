@@ -15,14 +15,16 @@ TodoItem <- setRefClass("TodoItem",
                                   timeCompleted = "POSIXct",
                                   isCompleted = "logical",
                                   itemID = "integer",
-                                  status = "factor"),
+                                  status = "factor",
+                                  comment = "character"),
                     # contains = "list",
                     methods = list(
                       initialize = function(text, ID = NA_integer_,
                                   timeCreated = Sys.time(),
                                   timeCompleted = as.POSIXct(NA),
                                   isCompleted = FALSE,
-                                  status = "incomplete") {
+                                  status = "incomplete",
+                                  comment = "") {
                         itemText <<- text
                         timeCreated <<- timeCreated
                         timeCompleted <<- timeCompleted
@@ -31,6 +33,7 @@ TodoItem <- setRefClass("TodoItem",
                                           levels = c("incomplete",
                                                      "completed",
                                                      "removed"))
+                        comment <<- ""
                         itemID <<- ID
                       },
                       show = function() {
@@ -39,6 +42,9 @@ TodoItem <- setRefClass("TodoItem",
                         cat("Created:   "); cat(methods::show(timeCreated))
                         if(isCompleted) {
                           cat("Completed: "); cat(methods::show(timeCompleted))
+                        }
+                        if(comment != "") {
+                          cat("Comment:   "); cat(methods::show(comment))
                         }
                         cat("ID:        "); cat(methods::show(itemID))
                       },
@@ -53,6 +59,15 @@ TodoItem <- setRefClass("TodoItem",
                           .self$markComplete()
                         if (newStatus == "incomplete")
                           .self$markIncomplete()
+                      },
+                      addComment = function(text, erase = FALSE) {
+                        "Add a comment to an item"
+                        stopifnot(length(text) == 1)
+                        text <- chartr(",", "_", text)
+                        if (nchar(comment) == 0 || erase)
+                          comment <<- text
+                        else
+                          comment <<- paste(comment, text, sep = "; ")
                       },
                       markComplete = function() {
                         "Mark an item as complete"
@@ -76,6 +91,7 @@ TodoItem <- setRefClass("TodoItem",
                                           timeCompleted = timeCompleted,
                                           isCompleted = isCompleted,
                                           itemID = itemID,
+                                          comment = comment,
                                           stringsAsFactors = FALSE)
                         out
                       }
@@ -111,7 +127,9 @@ TodoList <- setRefClass("TodoList",
                         what = match.arg(what)
 
                         cmpltd <- vapply(items, `[[`, logical(1), "isCompleted")
-                        rmvd <- vapply(items, function(x) x$status == "removed")
+                        rmvd <- vapply(items, function(x) x$status == "removed",
+                                       logical(1))
+                        # browser()
                         if (what == "todo")
                           toshow <- items[!cmpltd & !rmvd]
                         else if (what == "done")
@@ -138,6 +156,13 @@ TodoList <- setRefClass("TodoList",
                         nitems <<- nitems + 1L
                         items <<- stats::setNames(c(items, newItem),
                                            c(names(items), paste0("itm", nitems)))
+                        if (write && file.exists(File))
+                          .self$write.csv()
+                      },
+                      comment = function(ID, text, erase = FALSE, write = autowrite) {
+                        "Add a comment to an item"
+                        ID <- paste0("itm", ID)
+                        items[[ID]]$addComment(text, erase = erase)
                         if (write && file.exists(File))
                           .self$write.csv()
                       },
@@ -183,12 +208,18 @@ TodoList <- setRefClass("TodoList",
                           return()
                         for (i in 1:nrow(input)) {
                           itmlst <- input[i, ]
+                          # browser()
+                          if (is.na(itmlst$status))
+                            itmlst$status <- ifelse(itmlst$isCompleted,
+                                                    "completed", "incomplete")
                           newItem <- with(itmlst,
                                           TodoItem$new(text = itemText,
                                                    ID = itemID,
+                                                   status = status,
                                                    timeCreated = as.POSIXct(timeCreated),
                                                    timeCompleted = as.POSIXct(timeCompleted),
-                                                   isCompleted = isCompleted))
+                                                   isCompleted = isCompleted,
+                                                   comment = comment))
                           .self$add_item(newItem = newItem, write = FALSE)
                         }
                       }

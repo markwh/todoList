@@ -7,15 +7,17 @@
 
 use_todo <- function(name = "todo", file = "./todo.csv") {
 
+  # Check for RStudio project in working directory
   if(length(list.files(pattern = "\\.Rproj$")) == 0)
     stop("Must be called from root directory of an RStudio project.")
+
 
   if (".rprofile" %in% tolower(list.files(all.files = TRUE))) {
     if (!file.exists(".Rprofile"))
       stop(".Rprofile capitalization is off. Should be '.Rprofile'")
     txt1 <- readLines(".Rprofile")
     if (length(grep("todoList", txt1)) > 0) {
-      message("It appears todoList is already integrated to this project")
+      message("It appears todoList is already integrated with this project")
       invisible(TRUE)
     }
   } else {

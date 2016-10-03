@@ -95,3 +95,18 @@ test_that("Setting status works like makComplete, etc.", {
   itm1$setStatus("incomplete")
   expect_false(itm1$isCompleted)
 })
+
+test_that("comment adding works", {
+  itm1 <- TodoItem("Make it rain")
+
+  expect_equal(itm1$comment, "")
+
+  itm1$addComment(text = "A comment.")
+  expect_equal(itm1$comment, "A comment.")
+
+  itm1$addComment(text = "new, comment", erase = TRUE)
+  expect_equal(itm1$comment, "new_ comment")
+
+  itm1$addComment(text = "more")
+  expect_equal(itm1$comment, "new_ comment; more")
+})
