@@ -222,5 +222,11 @@ TodoList <- setRefClass("TodoList",
                                                    comment = comment))
                           .self$add_item(newItem = newItem, write = FALSE)
                         }
+                      },
+                      reread = function(){
+                        ff <- File
+                        aw <- autowrite
+                        .self$initialize(file = ff,
+                                         autowrite = aw)
                       }
                     ))

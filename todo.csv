@@ -1,12 +1,13 @@
-"itemText","timeCreated","timeCompleted","isCompleted","itemID","status","comment"
-"Finish vignette",2016-06-16 11:52:23,NA,FALSE,1,NA,NA
-"Check documentation",2016-06-16 11:52:25,NA,FALSE,2,NA,NA
-"this is a test",2016-06-16 12:02:37,2016-06-16 12:03:08,TRUE,3,NA,NA
-"get changes stored on external backup",2016-06-23 16:07:14,2016-06-30 14:45:14,TRUE,4,NA,NA
-"add subtasks",2016-06-30 14:45:51,NA,FALSE,5,NA,NA
-"add method to remove (not complete) tasks",2016-07-08 15:45:12,2016-10-02 20:40:24,TRUE,6,NA,NA
-"add comment field",2016-07-08 15:46:09,2016-10-02 20:39:24,TRUE,7,NA,NA
-"add non-binary status",2016-10-01 18:22:45,2016-10-02 19:55:41,TRUE,8,NA,NA
-"auto-initialize todo for a project",2016-10-02 20:43:30,NA,FALSE,10,"removed",""
-"auto-initialize todo for a project",2016-10-02 20:48:53,NA,FALSE,11,NA,NA
-"auto-initialize todo for a project",2016-10-02 20:49:01,NA,FALSE,12,NA,NA
+"itemText","timeCreated","status","timeCompleted","isCompleted","itemID","comment"
+"Finish vignette",2016-06-16 11:52:23,"incomplete",NA,FALSE,1,""
+"Check documentation",2016-06-16 11:52:25,"incomplete",NA,FALSE,2,""
+"this is a test",2016-06-16 12:02:37,"completed",2016-06-16 12:03:08,TRUE,3,""
+"get changes stored on external backup",2016-06-23 16:07:14,"completed",2016-06-30 14:45:14,TRUE,4,""
+"add subtasks",2016-06-30 14:45:51,"incomplete",NA,FALSE,5,""
+"add method to remove (not complete) tasks",2016-07-08 15:45:12,"completed",2016-10-02 20:40:24,TRUE,6,""
+"add comment field",2016-07-08 15:46:09,"completed",2016-10-02 20:39:24,TRUE,7,""
+"add non-binary status",2016-10-01 18:22:45,"completed",2016-10-02 19:55:41,TRUE,8,""
+"auto-initialize todo for a project",2016-10-02 20:43:30,"removed",NA,FALSE,10,""
+"auto-initialize todo for a project",2016-10-02 20:48:53,"incomplete",NA,FALSE,11,""
+"auto-initialize todo for a project",2016-10-02 20:49:01,"removed",NA,FALSE,12,""
+"implement method to reread from file",2016-10-14 13:32:19,"completed",2016-10-14 14:26:26,TRUE,12,""
