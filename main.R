@@ -7,6 +7,7 @@ library(devtools)
 # Packages
 
 use_package("stats")
+use_package("dplyr")
 
 # devtools utilities
 use_testthat()

@@ -15,4 +15,5 @@ Suggests:
     covr
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
-Imports: stats
+Imports: stats,
+    dplyr
