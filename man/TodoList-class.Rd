@@ -2,8 +2,8 @@
 % Please edit documentation in R/todolist.R
 \docType{class}
 \name{TodoList-class}
-\alias{TodoList}
 \alias{TodoList-class}
+\alias{TodoList}
 \title{Reference Class to represent todo list}
 \description{
 Reference Class to represent todo list
@@ -19,11 +19,14 @@ Reference Class to represent todo list
 
 \item{\code{autowrite}}{Logical, automatically write file upon modification? Defaults to TRUE.}
 }}
+
 \section{Methods}{
 
 \describe{
 \item{\code{add(text, write = autowrite)}}{Generate a new item to the todo list with the given text}
 
 \item{\code{add_item(newItem, write = autowrite)}}{Add a TodoItem object to the todo list}
+
+\item{\code{comment(ID, text, erase = FALSE, write = autowrite)}}{Add a comment to an item}
 }}
 

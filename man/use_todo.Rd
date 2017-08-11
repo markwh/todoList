@@ -9,4 +9,3 @@ use_todo(name = "todo", file = "./todo.csv")
 \description{
 Get going with TodoList package for your project.
 }
-

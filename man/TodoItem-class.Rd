@@ -2,8 +2,8 @@
 % Please edit documentation in R/todolist.R
 \docType{class}
 \name{TodoItem-class}
-\alias{TodoItem}
 \alias{TodoItem-class}
+\alias{TodoItem}
 \title{A Reference Class to represent a todo list item}
 \description{
 A Reference Class to represent a todo list item
@@ -21,13 +21,18 @@ A Reference Class to represent a todo list item
 
 \item{\code{itemID}}{Integer identifier of the todo item.}
 }}
+
 \section{Methods}{
 
 \describe{
+\item{\code{addComment(text, erase = FALSE)}}{Add a comment to an item}
+
 \item{\code{as.data.frame()}}{Convert an item to a data.frame}
 
 \item{\code{markComplete()}}{Mark an item as complete}
 
 \item{\code{markIncomplete()}}{Mark a completed item incomplete.}
+
+\item{\code{setStatus(newStatus = c("incomplete", "completed", "removed"))}}{set the status of a todo item}
 }}
 

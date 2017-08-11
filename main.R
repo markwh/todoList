@@ -10,7 +10,9 @@ use_package("stats")
 
 # devtools utilities
 use_testthat()
+use_travis()
+use_coverage()
 
-# vignette
+vignette
 
 use_vignette("todoList")
