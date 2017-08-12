@@ -119,7 +119,7 @@ TodoList <- setRefClass("TodoList",
                         autowrite <<- autowrite
 
                         if (!is.null(file)) {
-                          .self$import.csv(file)
+                          .self$import_csv(file)
                           File <<- file
                         }
                       },
@@ -200,7 +200,7 @@ TodoList <- setRefClass("TodoList",
                         # browser()
                         utils::write.csv(x = out, file = file, row.names = FALSE)
                       },
-                      import.csv = function(file) {
+                      import_csv = function(file) {
                         input <- try(utils::read.csv(file = file,
                                                      stringsAsFactors = FALSE),
                                      silent = TRUE)
@@ -213,16 +213,35 @@ TodoList <- setRefClass("TodoList",
                             itmlst$status <- ifelse(itmlst$isCompleted,
                                                     "completed", "incomplete")
                           newItem <- with(itmlst,
-                                          TodoItem$new(text = itemText,
-                                                   ID = itemID,
-                                                   status = status,
-                                                   timeCreated = as.POSIXct(timeCreated),
-                                                   timeCompleted = as.POSIXct(timeCompleted),
-                                                   isCompleted = isCompleted,
-                                                   comment = comment))
+                              TodoItem$new(text = itemText,
+                                 ID = itemID,
+                                 status = status,
+                                 timeCreated = as.POSIXct(timeCreated),
+                                 timeCompleted = as.POSIXct(timeCompleted),
+                                 isCompleted = isCompleted,
+                                 comment = comment))
                           .self$add_item(newItem = newItem, write = FALSE)
                         }
                       },
+                      import_ghi <- function(repo = gitRemote("origin", dir = ".")) {
+                        issues <- github::get.repository.issues(owner = gitRemote()[[1]],
+                                                                repo = gitRemote()[[2]])
+                        if (!issues$ok)
+                          stop("Github issue request failed.")
+
+                        for (i in 1:length(issues$content)) {
+
+                          newItem <- with(issues$content[[i]],
+                              TodoItem$new(text = title,
+                                 ID = number,
+                                 status = state,
+                                 timeCreated = as.POSIXct(created_at),
+                                 timeCompleted = as.POSIXct(closed_at),
+                                 isCompleted = (state == "closed"),
+                                 comment = paste(unlist(comments), collapse = "\n")))
+                          .self$add_item(newItem = newItem, write = FALSE)
+                        }
+                      }
                       reread = function(){
                         ff <- File
                         aw <- autowrite
