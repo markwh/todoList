@@ -3,6 +3,8 @@
 
 #' Get going with TodoList package for your project.
 #'
+#' @param name Name of TodoList object to generate
+#' @param file location of csv file storing the list.
 #' @export
 
 use_todo <- function(name = "todo", file = "./todo.csv") {

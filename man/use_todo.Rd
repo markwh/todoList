@@ -6,6 +6,11 @@
 \usage{
 use_todo(name = "todo", file = "./todo.csv")
 }
+\arguments{
+\item{name}{Name of TodoList object to generate}
+
+\item{file}{location of csv file storing the list.}
+}
 \description{
 Get going with TodoList package for your project.
 }

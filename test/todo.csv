@@ -1,7 +1,0 @@
-"itemText","timeCreated","timeCompleted","isCompleted","itemID"
-"Finish vignette",2016-06-16 11:52:23,NA,FALSE,1
-"Check documentation",2016-06-16 11:52:25,NA,FALSE,2
-"this is a test",2016-06-16 12:02:37,2016-06-16 12:03:08,TRUE,3
-"get changes stored on external backup",2016-06-23 16:07:14,2016-06-30 14:45:14,TRUE,4
-"add subtasks",2016-06-30 14:45:51,NA,FALSE,5
-"test use_todo()",2016-06-30 16:59:38,NA,FALSE,6
