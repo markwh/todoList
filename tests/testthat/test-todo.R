@@ -110,3 +110,17 @@ test_that("comment adding works", {
   itm1$addComment(text = "more")
   expect_equal(itm1$comment, "new_ comment; more")
 })
+
+
+test_that("github integration works", {
+  expect_is(list1 <- TodoList(import = "markwh/test-API"), "TodoList")
+  expect_is(itms1 <- list1$nitems, "integer")
+
+  list1$add("another item")
+  expect_equal(itms1 + 1L, list1$nitems)
+
+  expect_is(list2 <- TodoList(import = "markwh/test-API"), "TodoList")
+  expect_equal(list1$nitems, list2$nitems)
+  expect_equal(list1, list2)
+
+})
